@@ -5,7 +5,22 @@ class Person {
         this.requiredConfidence = requiredConfidence;
         this.charisma = charisma;
     }
-    convince(){
+    convince(member){
+       // make equation to raise confidence
+        // me.charisma  +- 2
+        // charisma +  randomVar from -2 to 2
+
+        // random number between 0 1
+        let randomVar = Math.floor(Math.random()*5) - 2;
+        
+        let charismaEffect = this.charisma + randomVar;
+
+        console.log(charismaEffect);
+
+        console.log(member);
+       member.confidence += charismaEffect;
+       console.log(member);
+      
 
     }
     discourage(){
@@ -35,8 +50,26 @@ myFriendGroup.addFriend("Sasha", 10, 50, 10);
 myFriendGroup.addFriend("Darren", 10, 70, 10);
 
 
-console.log(me);
-console.log(myFriendGroup);
 
 
-// create instance of person
+// loop here
+
+const conviceGroup = () => {
+    let friends = myFriendGroup.friends;
+    for (let i=0; i<friends.length; i++){
+        // break if our confidence is too low
+        if (me.confidence < me.requiredConfidence) {
+            break;
+        }
+        // we go first - convince()
+        me.convince(friends[i])
+        // are they convinced enough?
+        // go to next person
+
+        // discourage()
+        // check if we are too discouraged
+    }
+
+}
+conviceGroup()
+
