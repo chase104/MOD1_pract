@@ -27,6 +27,8 @@ class Person {
 }
 
 let me = new Person("Albruce", 100, 30, 20);
+me.trying = true;
+
 
 
 class FriendGroup {
@@ -52,19 +54,25 @@ myFriendGroup.addFriend("Darren", 10, 60, 10);
 const conviceGroup = () => {
     let friends = myFriendGroup.friends;
 
+    // loop through friends (one loop per friend)
     for (let i=0; i<friends.length; i++){
         // break if our confidence is too low
         if (me.confidence < me.requiredConfidence) {
             console.log("GAME OVER!", me.confidence);
+            me.trying = false;
             break;
         }
-
         let keepLooping = true;
+        // WHILE LOOP START
         while (keepLooping) {
             // convince
             me.convince(friends[i]);
             // check if friend is convinced enough
             if (friends[i].confidence >= friends[i].requiredConfidence) {
+              let response = window.prompt("Would you like to continue?");
+              if (response.toLowerCase() !== "yes") {
+                me.trying = false;
+              }
                 // console.log(`${friends[i].name} was convinced! Their confidence is now ${friends[i].confidence}`);
                 break;
             }
@@ -72,19 +80,31 @@ const conviceGroup = () => {
             friends[i].discourage(me);
             // check if I'm too discouraged
             if (me.confidence < me.requiredConfidence) {
+                me.trying = false;
+                // let the user know that someone was convinced, and ask if they would lik
+                // to continue trying to convice people
+                
                 // console.log(`${me.name} was discouraged! His confidence is now ${me.confidence}`);
                 break;
             }
         }
+        // WHILE LOOP END
         console.log(`Albruce confidence is ${me.confidence}`);
     }
 
-    if (me.confidence >= me.requiredConfidence) {
-        myFriendGroup.goingOnTrip = true;
+    if (me.trying === false) {
+        myFriendGroup.goingOnTrip = false;
+    } else {
+        myFriendGroup.goingOnTrip = false;
+
     }
+
+    // if (me.confidence >= me.requiredConfidence) {
+    //     myFriendGroup.goingOnTrip = true;
+    // }
 }
 
-conviceGroup()
+
+conviceGroup();
 
 
-console.log(myFriendGroup);
