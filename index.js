@@ -6,24 +6,22 @@ class Person {
         this.charisma = charisma;
     }
     convince(member){
-       // make equation to raise confidence
-        // me.charisma  +- 2
-        // charisma +  randomVar from -2 to 2
-
-        // random number between 0 1
+        // random between -2, 2
         let randomVar = Math.floor(Math.random()*5) - 2;
-        
+        // add random to the charisma
         let charismaEffect = this.charisma + randomVar;
 
-        console.log(charismaEffect);
-
-        console.log(member);
-       member.confidence += charismaEffect;
-       console.log(member);
-      
-
+        // raise confidence
+       member.confidence += charismaEffect;      
     }
-    discourage(){
+    discourage(meObject){
+         // random between -2, 2
+         let randomVar = Math.floor(Math.random()*5) - 2;
+         // add random to the charisma
+         let charismaEffect = this.charisma + randomVar;
+         // 8-12
+         // raise confidence
+        meObject.confidence -= charismaEffect;  
 
     }
 }
@@ -45,31 +43,48 @@ class FriendGroup {
 let myFriendGroup = new FriendGroup();
 
 myFriendGroup.addFriend("Jared", 10, 60, 10);
-myFriendGroup.addFriend("Sarah", 10, 65, 10);
-myFriendGroup.addFriend("Sasha", 10, 50, 10);
-myFriendGroup.addFriend("Darren", 10, 70, 10);
-
-
-
+myFriendGroup.addFriend("Sarah", 10, 60, 10);
+myFriendGroup.addFriend("Sasha", 10, 90, 15);
+myFriendGroup.addFriend("Darren", 10, 60, 10);
 
 // loop here
 
 const conviceGroup = () => {
     let friends = myFriendGroup.friends;
+
     for (let i=0; i<friends.length; i++){
         // break if our confidence is too low
         if (me.confidence < me.requiredConfidence) {
+            console.log("GAME OVER!", me.confidence);
             break;
         }
-        // we go first - convince()
-        me.convince(friends[i])
-        // are they convinced enough?
-        // go to next person
 
-        // discourage()
-        // check if we are too discouraged
+        let keepLooping = true;
+        while (keepLooping) {
+            // convince
+            me.convince(friends[i]);
+            // check if friend is convinced enough
+            if (friends[i].confidence >= friends[i].requiredConfidence) {
+                // console.log(`${friends[i].name} was convinced! Their confidence is now ${friends[i].confidence}`);
+                break;
+            }
+            // discourage
+            friends[i].discourage(me);
+            // check if I'm too discouraged
+            if (me.confidence < me.requiredConfidence) {
+                // console.log(`${me.name} was discouraged! His confidence is now ${me.confidence}`);
+                break;
+            }
+        }
+        console.log(`Albruce confidence is ${me.confidence}`);
     }
 
+    if (me.confidence >= me.requiredConfidence) {
+        myFriendGroup.goingOnTrip = true;
+    }
 }
+
 conviceGroup()
 
+
+console.log(myFriendGroup);
